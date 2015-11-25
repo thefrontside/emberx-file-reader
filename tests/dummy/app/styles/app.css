@@ -1,0 +1,25 @@
+body {
+  text-align: center;
+  padding: 100px;
+  font-family: arial;
+  font-weight: bold;
+}
+
+.organization-thumbnail {
+  border-radius: 50%;
+  height: 250px;
+  width: 250px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  background-color: lightgray;
+  border: 1px solid #D3D3D3;
+  margin: 30px;
+}
+
+.stats {
+  font-style: italic;
+  color: #73B1B7;
+  font-weight: normal;
+}

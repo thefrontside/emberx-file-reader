@@ -1,0 +1,1 @@
+export { default } from 'emberx-file-reader/components/x-file-reader';
