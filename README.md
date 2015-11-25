@@ -1,5 +1,5 @@
 # Emberx-file-reader
-The project is still a work in progress and is not intended for public use yet. It will be available on npm and ready for debut in early 2016.
+This project is still a work in progress and is not intended for public use yet. It will be available on npm and ready for debut in early 2016.
 
 An Ember CLI Addon designed to ease your image upload preview woes. 
 The x-file-reader component takes a file object as an argument and yields an object containing a url representation of the file (`reader.result`). We've also included a helpful style property that correctly formats the url for use as a background-image with an inline style attribute (`reader.style`).
@@ -35,6 +35,9 @@ For an all-handlebars-based image uploader, pair this addon with emberx-image-up
 
 ## Installation
 `ember install emberx-file-reader`
+
+
+# Ember Instructions
 
 ## Installation
 
