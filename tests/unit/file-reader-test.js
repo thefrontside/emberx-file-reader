@@ -96,7 +96,10 @@ describe("FileReader", function() {
         this.ended = this.started.loadend({
           lengthComputable: true,
           loaded: 100,
-          total: 100
+          total: 100,
+          target: {
+            result: {ohai: 'world'}
+          }
         });
       });
       it("returns a new state", function() {
@@ -108,6 +111,9 @@ describe("FileReader", function() {
       it("contains the progress properties", function() {
         expect(this.ended.ratio).to.equal(1);
         expect(this.ended.percentage).to.equal(100);
+      });
+      it("contains the result", function() {
+        expect(this.ended.result).to.deep.equal({ohai: 'world'});
       });
     });
   });

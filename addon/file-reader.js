@@ -100,6 +100,7 @@ class LoadedFileReader extends FileReaderState {
   constructor(previous, event) {
     super();
     this.events = previous.events.concat(new ProgressEvent(event));
+    this.result = event.target.result;
   }
   get isLoadStarted() { return true; }
 
