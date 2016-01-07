@@ -1,20 +1,14 @@
 <h1>X-FILE-READER DEMO</h1>
 {{#x-image-uploader as |file|}}
-  {{#x-file-reader file=file as |reader|}}
+  {{#x-file-reader method="readAsDataURL" file=file as |reader|}}
     {{#if file}}
-      {{#if reader.isLoadStarted}}
-        {{#if reader.isLoadEnded}}
-          <div alt="pending-avatar" class="organization-thumbnail" style="background-image: url({{reader.result}})"></div>
-        {{else}}
-          <div alt="pending-avatar" class="organization-thumbnail" style="background-image: url({{reader.result}})">
-            {{reader.percentage}}%
-          </div>
-        {{/if}}
-        <div class="file-name">FILE NAME: <span class="stats">{{file.name}}</span></div>
-        <div class="file-name">FILE SIZE: <span class="stats">{{file.size}}</span></div>
-        <div class="file-name">FILE TYPE: <span class="stats">{{file.type}}</span></div>
-        <div class="file-name">LAST MODIFIED: <span class="stats">{{file.lastModifiedDate}}</span></div>
-      {{/if}}
+      <div alt="pending-avatar" class="organization-thumbnail" style="background-image: url({{reader.result}})">
+        {{#unless reader.isLoadEnded}}{{reader.percentage}}{{/unless}}
+      </div>
+      <div class="file-name">FILE NAME: <span class="stats">{{file.name}}</span></div>
+      <div class="file-name">FILE SIZE: <span class="stats">{{file.size}}</span></div>
+      <div class="file-name">FILE TYPE: <span class="stats">{{file.type}}</span></div>
+      <div class="file-name">LAST MODIFIED: <span class="stats">{{file.lastModifiedDate}}</span></div>
     {{else}}
       <div  alt="default-avatar" class="organization-thumbnail"></div>
       <div class="file-name">CLICK TO SELECT A FILE</div>

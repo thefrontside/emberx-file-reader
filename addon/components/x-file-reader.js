@@ -8,10 +8,11 @@ export default Ember.Component.extend({
   classNames: ["spec-file-reader"],
   file: null,
   model: new State(),
-  readFile: Ember.observer('file', function() {
-    let file = this.get('file');
-    let reader = new FileReader();
-    this.set('model', new State());
+  method: "readAsDataURL",
+
+  init() {
+    this._super.apply(this, arguments);
+    let reader = this.reader = new FileReader();
     reader.onloadstart = Ember.run.bind(this, function(event) {
       this.set('model', this.get('model').loadstart(event));
     });
@@ -27,6 +28,38 @@ export default Ember.Component.extend({
     reader.onerror = Ember.run.bind(this, function(event) {
       this.set('model', this.get('model').error(event));
     });
-    reader.readAsDataURL(file);
+  },
+
+  readFile: Ember.observer('file', 'method', function() {
+    let file = this.get('file');
+    let method = this.get('method');
+    this.reader[method].call(this.reader, file);
+  }),
+
+  destroy() {
+    let r = this.reader;
+    r.onloadstart = r.onprogress = r.onloadend = r.onabort = r.onerror = null;
+    this._super.apply(this, arguments);
+  },
+
+  methods: Ember.computed(function() {
+    let reader = this.reader;
+    return {
+      abort() {
+        reader.abort();
+      },
+      readAsArrayBuffer(blob) {
+        return reader.readAsArrayBuffer(blob);
+      },
+      readAsBinaryString(blob) {
+        return reader.readAsBinaryString(blob);
+      },
+      readAsDataURL(blob) {
+        return reader.readAsDataURL(blob);
+      },
+      readAsText(blob) {
+        return reader.readAsText(blob);
+      }
+    };
   })
 });

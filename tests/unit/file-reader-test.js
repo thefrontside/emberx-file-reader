@@ -3,8 +3,6 @@ import { expect } from 'chai';
 
 import FileReader from 'emberx-file-reader/file-reader';
 
-console.log("FileReader = ", FileReader);
-
 describe("FileReader", function() {
   beforeEach(function() {
     this.reader = new FileReader();
@@ -25,7 +23,7 @@ describe("FileReader", function() {
     expect(this.reader.ratio).to.equal(0);
   });
 
-  describe("reading as a URL", function() {
+  describe.only("reading as a URL", function() {
     beforeEach(function() {
       this.started = this.reader.loadstart({
         lengthComputable: true,
@@ -57,6 +55,15 @@ describe("FileReader", function() {
       it("has an abortion date", function() {
         expect(this.aborted.abortedAt.timestamp).to.be.instanceOf(Date);
       });
+      describe("finishing an aborted request", function() {
+        beforeEach(function() {
+          this.finished = this.aborted.loadend();
+        });
+        it("returns itself", function() {
+          expect(this.finished).to.equal(this.aborted);
+        });
+      });
+
     });
 
     describe("reporting progress", function() {
@@ -115,6 +122,28 @@ describe("FileReader", function() {
       it("contains the result", function() {
         expect(this.ended.result).to.deep.equal({ohai: 'world'});
       });
+      describe("starting again", function() {
+        beforeEach(function() {
+          this.next = this.ended.loadstart({
+            lengthComputable: true,
+            loaded: 0,
+            total: 100,
+          });
+        });
+        it("returns a new state", function() {
+          expect(this.next).to.not.equal(this.ended);
+        });
+        it("has a reset progress indication", function() {
+          expect(this.next.ratio).to.equal(0);
+        });
+        it("no longer has a result", function() {
+          expect(this.next.result).to.equal(null);
+        });
+        it("does not hold on to all the old progress events", function() {
+          expect(this.next.events.length).to.equal(2);
+        });
+      });
+
     });
   });
 });

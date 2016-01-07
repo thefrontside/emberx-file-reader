@@ -19,6 +19,7 @@ export default Ember.Component.extend({
   actions: {
     didSelectImage(fileList) {
       this.set('fileList', fileList);
+      this.sendAction('on-select', fileList[0]);
     }
   }
 });

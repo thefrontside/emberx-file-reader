@@ -21,10 +21,19 @@ class ProgressEvent {
   }
 }
 
+
 class FileReaderState {
   constructor() {
     this.detail = this.result = null;
+    this.events = [new ProgressEvent({
+      lengthComputable: false
+    })];
   }
+
+  loadstart(event) {
+    return new LoadingFileReader(new FileReaderState(), event);
+  }
+
   get ratio() { return this.latest.ratio; }
   get percentage() { return this.latest.percentage; }
   get latest() {
@@ -34,20 +43,6 @@ class FileReaderState {
   get isErrored() { return false; }
   get isLoadStarted() { return false; }
   get isLoadEnded() { return false; }
-}
-
-export default class EmptyFileReader extends FileReaderState {
-  constructor() {
-    super();
-    this.events = [new ProgressEvent({
-      lengthComputable: false
-    })];
-  }
-  loadstart(event) {
-    return new LoadingFileReader(this, event);
-  }
-
-  get readyState() { return 0; }
 }
 
 class LoadingFileReader extends FileReaderState {
@@ -83,6 +78,10 @@ class AbortedFileReader extends FileReaderState {
     this.abortedAt = new ProgressEvent(event);
   }
 
+  loadend() {
+    return this;
+  }
+
   get isAborted() { return true; }
 }
 
@@ -91,6 +90,10 @@ class ErroredFileReader extends FileReaderState {
     super();
     this.detail = event;
     this.erroredAt = new ProgressEvent(event);
+  }
+
+  loadend() {
+    return this;
   }
 
   get isErrored() { return true; }
@@ -106,3 +109,5 @@ class LoadedFileReader extends FileReaderState {
 
   get isLoadEnded() { return true; }
 }
+
+export default FileReaderState;
